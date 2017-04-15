@@ -9,6 +9,7 @@
 #include <cmath>
 #include <climits>
 #include <cstdlib>
+#include <algorithm>
 
 #include "Node.h"
 #include "Map.h"
@@ -16,11 +17,6 @@
 // used by pathToNode and successors
 NodeList * openList = new NodeList;
 NodeList * closedList = new NodeList;
-
-inline int max(int a, int b)
-{
-	return a > b ? a : b;
-}
 
 //
 // Based on a single node-to-node distance being 10,
@@ -52,7 +48,7 @@ int Node::gridDistanceTo(Node *dest)
 	// the difference between dx and dy are how many diagonal moves are needed
 	int diagonalCount = abs(dy - dx);
 	// so the straight moves are the leftovers after all the diagonal moves are done
-	int straightCount = max(dx, dy) - diagonalCount;
+	int straightCount = std::max(dx, dy) - diagonalCount;
 	return straightCount * kStraightDistance + diagonalCount * diagonalDistance;
 }
 
@@ -67,11 +63,14 @@ NodeList * Node::successors(Node *start, Node *finish)
 			}
 			int newx = x+dx;
 			int newy = y+dy;
-			// skip coordinates outside the map
+
 			if(!map->contains(newx, newy)) {
+				// skip coordinates outside the map
 				continue;
 			}
+
 			Node *node = map->nodeAt(newx, newy);
+
 			if(node == finish) {
 				// found the finish node, so we are done!
 				// get rid of anyone else in the list
@@ -82,18 +81,34 @@ NodeList * Node::successors(Node *start, Node *finish)
 				// and return it
 				return list;
 			}
+
 			// how to find out if a list contains a node
 			bool nodeIsClosed = std::find(closedList->begin(), closedList->end(), node) == closedList->end();
 			if(!node->canBePath || nodeIsClosed) {
 				continue;
 			}
-			float g = node->gridDistanceTo(start);
-			float h = node->gridDistanceTo(finish);
+
+			// destDistance
+			int newDestDistance = node->gridDistanceTo(finish);
+
+			// srcDistance is path distance to us + path distance to reach the neighbour node
+			// assume straight
+			int newSrcDistance = 10;
+			if(dx != 0 && dy != 0) {
+				// nope, it's a diagonal line
+				newSrcDistance = 14;
+			}
+			// now add the path distance so far
+			newSrcDistance += srcDistance;
+
+			// check if this is the shortes path to this node
 			int oldNodeCost = node->totalCost();
-			// oldNodeCost == 0 means never checked
-			if(oldNodeCost == 0 || g+h < oldNodeCost) {
-				node->destDistance = h;
-				node->srcDistance = g;
+			int newTotalCost = newDestDistance + newSrcDistance;
+			// oldNodeCost == 0 means never checked, newDestDistance+newSrcDistance would be new cost
+			if(oldNodeCost == 0 || newTotalCost < oldNodeCost) {
+				// update node since we are closer than any previous path
+				node->srcDistance = newSrcDistance;
+				node->destDistance = newDestDistance;
 				node->parent = this;
 			}
 			list->push_back(node);
