@@ -23,7 +23,9 @@ const int mapRowCount = sizeof(mapData) / sizeof(mapData[0]);
 int main(int argc, const char * argv[]) {
 	Map * map = new Map;
 	map->parseMap(mapData, mapRowCount);
+	std::cout << "  0123456789" << std::endl;
 	for(int y=0; y<map->height; y++) {
+		std::cout << y << " ";
 		for(int x=0; x<map->width; x++) {
 			if(map->nodeAt(x, y)->canBePath) {
 				std::cout << " ";
@@ -33,5 +35,16 @@ int main(int argc, const char * argv[]) {
 		}
 		std::cout << std::endl;
 	}
+	std::cout << std::endl;
+	// now try finding a path
+	Node *start = map->nodeAt(5, 1);
+	Node *finish = map->nodeAt(5, 3);
+	NodeList *path = start->pathToNode(finish);
+	std::cout << "Path from [" << start->x << "," << start->y << "] to [" << finish->x << "," << finish->y << "]:" << std::endl;
+	path->reverse();
+	for(Node *node : *path) {
+		std::cout << "\t[" << node->x << "," << node->y << "]" << std::endl;
+	}
+	std::cout << "End of path." << std::endl;
 	return 0;
 }

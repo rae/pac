@@ -52,7 +52,7 @@ int Node::gridDistanceTo(Node *dest)
 	return straightCount * kStraightDistance + diagonalCount * diagonalDistance;
 }
 
-NodeList * Node::successors(Node *start, Node *finish)
+NodeList * Node::successors(Node *finish)
 {
 	NodeList * list = new NodeList;
 	// iterate from -1..+1 in x and y to cover all neighbouring nodes
@@ -83,7 +83,8 @@ NodeList * Node::successors(Node *start, Node *finish)
 			}
 
 			// how to find out if a list contains a node
-			bool nodeIsClosed = std::find(closedList->begin(), closedList->end(), node) == closedList->end();
+			bool nodeIsClosed = std::find(closedList->begin(), closedList->end(), node) != closedList->end();
+			bool nodeIsOpen = std::find(openList->begin(), openList->end(), node) != openList->end();
 			// if it's a wall or on the closed list, skip this node
 			if(!node->canBePath || nodeIsClosed) {
 				continue;
@@ -112,6 +113,9 @@ NodeList * Node::successors(Node *start, Node *finish)
 				node->destDistance = newDestDistance;
 				node->parent = this;
 			}
+			if(!nodeIsOpen) {
+				openList->push_back(node);
+			}
 			list->push_back(node);
 		}
 	}
@@ -132,23 +136,40 @@ Node * Node::findLeastCostNode(const NodeList &list)
 
 NodeList * Node::pathToNode(Node *destination)
 {
-	openList->push_back(this);
 	NodeList* successors = nullptr;
 	NodeList* path = nullptr;
+
+	// clear out old lists
+	openList->clear();
+	closedList->clear();
+
+	// starting from here, so no distance from start
+	srcDistance = 0;
+	destDistance = gridDistanceTo(destination);
+
+	// check trivial "found" case
+	if(destination == this) {
+		path = new NodeList;
+		path->push_back(this);
+		return path;
+	}
+
+	openList->push_back(this);
 	while(!openList->empty()) {
+		// get the next node with the least cost and remove it from the open list
 		Node *q = findLeastCostNode(*openList);
 		openList->remove(q);
-		successors = q->successors(this, destination);
+		// get the successors around q (which sets their parent to q, and adds them to the openList),
+		// checking if each is the destination
+		successors = q->successors(destination);
 		// check for found state
 		if(successors->size() == 1 && successors->front() == destination) {
 			destination->parent = q;
 			return destination->parentPath();
 		}
+		// add q to the closed list since it's been checked out
+		closedList->push_back(q);
 	}
-	// starting from here, so no distance from start
-	srcDistance = 0;
-	destDistance = gridDistanceTo(destination);
-	// call recursive function
 	return path;
 }
 
