@@ -42,6 +42,9 @@ struct Node {
 	// methods
 	//
 
+	// trivial constructor sets x, y
+	Node(int inX, int inY) : x(inX), y(inY) {}
+
 	// "f"
 	float totalCost() { return srcDistance + destDistance; }
 

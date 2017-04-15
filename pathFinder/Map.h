@@ -13,11 +13,21 @@ class Node;
 
 struct Map {
 	Node * nodeAt(int x, int y);
-	int width();
-	int height();
 
 	bool contains(int x, int y) {
-		return x >= 0 && x < width() && y >= 0 && y < height();
+		return x >= 0 && x < width && y >= 0 && y < height;
 	}
+
+	void parseMap(const char *strings[], int rowCount);
+
+	//
+	// Node data
+	//
+	Node *** mapNodes; // yes, a triple-pointer
+	int height;
+	int width;
+
+private:
+	void clearMap();
 };
 #endif /* Map_hpp */
