@@ -55,6 +55,7 @@ int Node::gridDistanceTo(Node *dest)
 NodeList * Node::successors(Node *start, Node *finish)
 {
 	NodeList * list = new NodeList;
+	// iterate from -1..+1 in x and y to cover all neighbouring nodes
 	for(int dx=-1; dx < 2; dx++) {
 		for(int dy=-1; dy < 2; dy++) {
 			// skip ourself
@@ -64,12 +65,11 @@ NodeList * Node::successors(Node *start, Node *finish)
 			int newx = x+dx;
 			int newy = y+dy;
 
-			if(!map->contains(newx, newy)) {
-				// skip coordinates outside the map
+			Node *node = map->nodeAt(newx, newy);
+			if(node == nullptr) {
+				// probably coordinates outside the map
 				continue;
 			}
-
-			Node *node = map->nodeAt(newx, newy);
 
 			if(node == finish) {
 				// found the finish node, so we are done!
@@ -84,6 +84,7 @@ NodeList * Node::successors(Node *start, Node *finish)
 
 			// how to find out if a list contains a node
 			bool nodeIsClosed = std::find(closedList->begin(), closedList->end(), node) == closedList->end();
+			// if it's a wall or on the closed list, skip this node
 			if(!node->canBePath || nodeIsClosed) {
 				continue;
 			}
@@ -117,7 +118,48 @@ NodeList * Node::successors(Node *start, Node *finish)
 	return list;
 }
 
+Node * Node::findLeastCostNode(const NodeList &list)
+{
+	Node * cheapest = nullptr;
+	// use C++11's cool iteration syntax
+	for(Node * node: list) {
+		if(cheapest == nullptr || node->totalCost() < cheapest->totalCost()) {
+			cheapest = node;
+		}
+	}
+	return cheapest;
+}
+
 NodeList * Node::pathToNode(Node *destination)
 {
-	return nullptr;
+	openList->push_back(this);
+	NodeList* successors = nullptr;
+	NodeList* path = nullptr;
+	while(!openList->empty()) {
+		Node *q = findLeastCostNode(*openList);
+		openList->remove(q);
+		successors = q->successors(this, destination);
+		// check for found state
+		if(successors->size() == 1 && successors->front() == destination) {
+			destination->parent = q;
+			return destination->parentPath();
+		}
+	}
+	// starting from here, so no distance from start
+	srcDistance = 0;
+	destDistance = gridDistanceTo(destination);
+	// call recursive function
+	return path;
+}
+
+// returns path from destination back to source (you may want to reverse this)
+NodeList * Node::parentPath()
+{
+	NodeList *path = new NodeList;
+	Node *node = this;
+	while(node->parent != nullptr) {
+		path->push_back(node);
+		node = node->parent;
+	}
+	return path;
 }
