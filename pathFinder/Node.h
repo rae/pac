@@ -58,11 +58,12 @@ struct Node {
 	// search for a path to another node on "map" - returns nullptr for no path
 	NodeList * pathToNode(Node *destination);
 
-	// follow the parent nodes and generate a path
+	// follow back along the parent nodes and generate a path
 	NodeList * parentPath();
 
 private:
-	Node * findLeastCostNode(const NodeList &list);
+	// parses the list to find the cheapest one - no need to refer to 'this', so make it static
+	static Node * findLeastCostNode(const NodeList &list);
 };
 
 #endif /* Node_hpp */

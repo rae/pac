@@ -182,5 +182,9 @@ NodeList * Node::parentPath()
 		path->push_back(node);
 		node = node->parent;
 	}
+	// push back the final node, which is the start point
+	path->push_back(node);
+	// reverse the path so it goes from start to finish
+	path->reverse();
 	return path;
 }

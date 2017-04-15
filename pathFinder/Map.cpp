@@ -10,6 +10,8 @@
 #include "Map.h"
 #include "Node.h"
 
+inline bool ispath(char c) { return c == ' ' || c == '*'; }
+
 void Map::parseMap(const char *strings[], int rowCount)
 {
 	// clear out existing map, if any
@@ -46,7 +48,7 @@ void Map::parseMap(const char *strings[], int rowCount)
 		for(int x=0; x<width; x++) {
 			mapNodes[y][x] = new Node(x, y, this);
 			// canBePath is true if the string has a space here
-			mapNodes[y][x]->canBePath = (strings[y][x] == ' ');
+			mapNodes[y][x]->canBePath = ispath(strings[y][x]);
 		}
 	}
 }

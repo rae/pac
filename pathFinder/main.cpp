@@ -12,9 +12,9 @@
 
 const char *mapData[] = {
 	"#######",
-	"#     #",
-	"#  ####",
-	"#     #",
+	"#*   *#",
+	"# #####",
+	"#*   *#",
 	"#######"
 };
 
@@ -41,7 +41,6 @@ int main(int argc, const char * argv[]) {
 	Node *finish = map->nodeAt(5, 3);
 	NodeList *path = start->pathToNode(finish);
 	std::cout << "Path from [" << start->x << "," << start->y << "] to [" << finish->x << "," << finish->y << "]:" << std::endl;
-	path->reverse();
 	for(Node *node : *path) {
 		std::cout << "\t[" << node->x << "," << node->y << "]" << std::endl;
 	}
