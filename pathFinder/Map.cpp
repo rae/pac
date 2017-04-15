@@ -44,7 +44,7 @@ void Map::parseMap(const char *strings[], int rowCount)
 		assert(strings[y] != nullptr && strlen(strings[y]) == width);
 		// create this row of nodes
 		for(int x=0; x<width; x++) {
-			mapNodes[y][x] = new Node(x, y);
+			mapNodes[y][x] = new Node(x, y, this);
 			// canBePath is true if the string has a space here
 			mapNodes[y][x]->canBePath = (strings[y][x] == ' ');
 		}

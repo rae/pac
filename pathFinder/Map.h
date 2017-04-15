@@ -12,12 +12,18 @@
 class Node;
 
 struct Map {
+	// constructor
+	Map() : mapNodes(nullptr), height(0), width(0) {}
+
+	// node access
 	Node * nodeAt(int x, int y);
 
+	// coordinate query
 	bool contains(int x, int y) {
 		return x >= 0 && x < width && y >= 0 && y < height;
 	}
 
+	// map population via ASCII strings
 	void parseMap(const char *strings[], int rowCount);
 
 	//

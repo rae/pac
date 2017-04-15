@@ -30,6 +30,17 @@ inline int max(int a, int b)
 const int kStraightDistance = 10;
 const int diagonalDistance = 14;
 
+Node::Node(int inX, int inY, Map *inMap)
+: x(inX),
+  y(inY),
+  canBePath(false),
+  srcDistance(0),
+  destDistance(0),
+  parent(nullptr),
+  map(inMap)
+{
+}
+
 int Node::gridDistanceTo(Node *dest)
 {
 	if(dest == nullptr) {
