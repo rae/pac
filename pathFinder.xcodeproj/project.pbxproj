@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		015AF3801EA19DDD00F659A6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 015AF37F1EA19DDD00F659A6 /* main.cpp */; };
+		015AF3881EA19DF600F659A6 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 015AF3861EA19DF600F659A6 /* Node.cpp */; };
+		015AF38B1EA19F1600F659A6 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 015AF3891EA19F1600F659A6 /* Map.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,10 @@
 /* Begin PBXFileReference section */
 		015AF37C1EA19DDD00F659A6 /* pathFinder */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pathFinder; sourceTree = BUILT_PRODUCTS_DIR; };
 		015AF37F1EA19DDD00F659A6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		015AF3861EA19DF600F659A6 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
+		015AF3871EA19DF600F659A6 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
+		015AF3891EA19F1600F659A6 /* Map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Map.cpp; sourceTree = "<group>"; };
+		015AF38A1EA19F1600F659A6 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +64,10 @@
 			isa = PBXGroup;
 			children = (
 				015AF37F1EA19DDD00F659A6 /* main.cpp */,
+				015AF3871EA19DF600F659A6 /* Node.h */,
+				015AF3861EA19DF600F659A6 /* Node.cpp */,
+				015AF38A1EA19F1600F659A6 /* Map.h */,
+				015AF3891EA19F1600F659A6 /* Map.cpp */,
 			);
 			path = pathFinder;
 			sourceTree = "<group>";
@@ -119,7 +129,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				015AF38B1EA19F1600F659A6 /* Map.cpp in Sources */,
 				015AF3801EA19DDD00F659A6 /* main.cpp in Sources */,
+				015AF3881EA19DF600F659A6 /* Node.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
