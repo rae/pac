@@ -61,6 +61,10 @@ struct Node {
 	// follow back along the parent nodes and generate a path
 	NodeList * parentPath();
 
+	// does this node have > 2 connections? (i.e. does a ghost have to decide which
+	// way to go when it exits this node?)
+	bool isWaypoint();
+
 private:
 	// parses the list to find the cheapest one - no need to refer to 'this', so make it static
 	static Node * findLeastCostNode(const NodeList &list);

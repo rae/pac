@@ -20,7 +20,7 @@ const char *simpleData[] = {
 const int simpleRowCount = sizeof(simpleData) / sizeof(simpleData[0]);
 
 const char *pacmanData[] = {
-//    123456789 123456789 1234567
+	//    123456789 123456789 1234567
 	"############################", // 0
 	"#            ##            #", // 1
 	"# #### ##### ## ##### #### #", // 2
@@ -52,7 +52,7 @@ const char *pacmanData[] = {
 	"# ########## ## ########## #", // 28
 	"#                          #", // 29
 	"############################"  // 30
-//    123456789 123456789 1234567
+									//    123456789 123456789 1234567
 };
 const int pacmanRowCount = sizeof(pacmanData) / sizeof(pacmanData[0]);
 

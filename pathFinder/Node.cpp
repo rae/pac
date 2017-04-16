@@ -60,7 +60,7 @@ int Node::gridDistanceTo(Node *dest)
 #define OMIT_DIAGONALS 1
 
 // convenience function - does this list contain this node?
-bool contains(NodeList *list, Node *node)
+bool listContainsNode(NodeList *list, Node *node)
 {
 	return std::find(list->begin(), list->end(), node) != list->end();
 }
@@ -115,8 +115,8 @@ std::tuple<NodeList *, bool> Node::neighbours(Node *finish)
 				return make_tuple(neighbourList, foundFinish);
 			}
 
-			bool nodeIsClosed = contains(closedList, node);
-			bool nodeIsOpen = contains(openList, node);
+			bool nodeIsClosed = listContainsNode(closedList, node);
+			bool nodeIsOpen = listContainsNode(openList, node);
 			// if it's a wall or on the closed list, skip this node
 			if(!node->canBePath || nodeIsClosed) {
 				continue;
@@ -229,4 +229,20 @@ NodeList * Node::parentPath()
 	// reverse the path so it goes from start to finish instead of finish to start
 	path->reverse();
 	return path;
+}
+
+bool Node::isWaypoint()
+{
+	int cardinalDirections[][2] = { {-1, 0}, {0, 1}, {1, 0}, {0, -1} };
+	int exitCount = 0;
+	for(int* delta : cardinalDirections) {
+		Node * node = map->nodeAt(delta[0], delta[1]);
+		if(node != nullptr && node->canBePath) {
+			exitCount++;
+		}
+	}
+	// if there is more than an entrance and exit, then this is a waypoint
+	// where a decision must be made (by calling pathToNode(user)) which way
+	// to go next
+	return exitCount > 2;
 }

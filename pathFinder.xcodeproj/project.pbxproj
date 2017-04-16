@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		014FF4781EA3F82D0020FCA8 /* CharacterModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014FF4761EA3F82D0020FCA8 /* CharacterModel.cpp */; };
 		015AF3801EA19DDD00F659A6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 015AF37F1EA19DDD00F659A6 /* main.cpp */; };
 		015AF3881EA19DF600F659A6 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 015AF3861EA19DF600F659A6 /* Node.cpp */; };
 		015AF38B1EA19F1600F659A6 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 015AF3891EA19F1600F659A6 /* Map.cpp */; };
@@ -25,6 +26,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		014FF4761EA3F82D0020FCA8 /* CharacterModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterModel.cpp; sourceTree = "<group>"; };
+		014FF4771EA3F82D0020FCA8 /* CharacterModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterModel.h; sourceTree = "<group>"; };
 		015AF37C1EA19DDD00F659A6 /* pathFinder */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pathFinder; sourceTree = BUILT_PRODUCTS_DIR; };
 		015AF37F1EA19DDD00F659A6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		015AF3861EA19DF600F659A6 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
@@ -66,6 +69,8 @@
 				015AF37F1EA19DDD00F659A6 /* main.cpp */,
 				015AF3871EA19DF600F659A6 /* Node.h */,
 				015AF3861EA19DF600F659A6 /* Node.cpp */,
+				014FF4761EA3F82D0020FCA8 /* CharacterModel.cpp */,
+				014FF4771EA3F82D0020FCA8 /* CharacterModel.h */,
 				015AF38A1EA19F1600F659A6 /* Map.h */,
 				015AF3891EA19F1600F659A6 /* Map.cpp */,
 			);
@@ -130,6 +135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				015AF38B1EA19F1600F659A6 /* Map.cpp in Sources */,
+				014FF4781EA3F82D0020FCA8 /* CharacterModel.cpp in Sources */,
 				015AF3801EA19DDD00F659A6 /* main.cpp in Sources */,
 				015AF3881EA19DF600F659A6 /* Node.cpp in Sources */,
 			);
