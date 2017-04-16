@@ -53,7 +53,7 @@ struct Node {
 	int gridDistanceTo(Node * dest);
 
 	// return a list of valid nodes surrounding this one
-	NodeList * successors(Node *finish);
+	std::tuple<NodeList *, bool> neighbours(Node *finish);
 
 	// search for a path to another node on "map" - returns nullptr for no path
 	NodeList * pathToNode(Node *destination);

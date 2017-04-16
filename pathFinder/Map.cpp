@@ -10,7 +10,7 @@
 #include "Map.h"
 #include "Node.h"
 
-inline bool ispath(char c) { return c == ' ' || c == '*'; }
+inline bool ispath(char c) { return c != '#'; }
 
 void Map::parseMap(const char *strings[], int rowCount)
 {
