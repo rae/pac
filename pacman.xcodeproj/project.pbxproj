@@ -9,8 +9,12 @@
 /* Begin PBXBuildFile section */
 		0121E6ED1EA410A200627386 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0121E6EB1EA410A200627386 /* GLUT.framework */; };
 		0121E6EE1EA410A200627386 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0121E6EC1EA410A200627386 /* OpenGL.framework */; };
+		0121E6F71EA4125200627386 /* Ghost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0121E6EF1EA4125200627386 /* Ghost.cpp */; };
+		0121E6F81EA4125200627386 /* PacMan.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0121E6F11EA4125200627386 /* PacMan.cpp */; };
+		0121E6F91EA4125200627386 /* SceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0121E6F31EA4125200627386 /* SceneNode.cpp */; };
+		0121E6FA1EA4125200627386 /* Starter_Class.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0121E6F51EA4125200627386 /* Starter_Class.cpp */; };
+		0121E6FC1EA4145A00627386 /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0121E6FB1EA4145A00627386 /* Wall.cpp */; };
 		014FF4781EA3F82D0020FCA8 /* CharacterModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014FF4761EA3F82D0020FCA8 /* CharacterModel.cpp */; };
-		015AF3801EA19DDD00F659A6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 015AF37F1EA19DDD00F659A6 /* main.cpp */; };
 		015AF3881EA19DF600F659A6 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 015AF3861EA19DF600F659A6 /* Node.cpp */; };
 		015AF38B1EA19F1600F659A6 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 015AF3891EA19F1600F659A6 /* Map.cpp */; };
 /* End PBXBuildFile section */
@@ -30,6 +34,15 @@
 /* Begin PBXFileReference section */
 		0121E6EB1EA410A200627386 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		0121E6EC1EA410A200627386 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		0121E6EF1EA4125200627386 /* Ghost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ghost.cpp; sourceTree = "<group>"; };
+		0121E6F01EA4125200627386 /* Ghost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ghost.h; sourceTree = "<group>"; };
+		0121E6F11EA4125200627386 /* PacMan.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PacMan.cpp; sourceTree = "<group>"; };
+		0121E6F21EA4125200627386 /* PacMan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacMan.h; sourceTree = "<group>"; };
+		0121E6F31EA4125200627386 /* SceneNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneNode.cpp; sourceTree = "<group>"; };
+		0121E6F41EA4125200627386 /* SceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneNode.h; sourceTree = "<group>"; };
+		0121E6F51EA4125200627386 /* Starter_Class.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Starter_Class.cpp; sourceTree = "<group>"; };
+		0121E6F61EA4125200627386 /* Wall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wall.h; sourceTree = "<group>"; };
+		0121E6FB1EA4145A00627386 /* Wall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Wall.cpp; sourceTree = "<group>"; };
 		014FF4761EA3F82D0020FCA8 /* CharacterModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterModel.cpp; sourceTree = "<group>"; };
 		014FF4771EA3F82D0020FCA8 /* CharacterModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterModel.h; sourceTree = "<group>"; };
 		015AF37C1EA19DDD00F659A6 /* pathFinder */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pathFinder; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +95,8 @@
 		015AF37E1EA19DDD00F659A6 /* pacman */ = {
 			isa = PBXGroup;
 			children = (
+				0121E6EF1EA4125200627386 /* Ghost.cpp */,
+				0121E6F01EA4125200627386 /* Ghost.h */,
 				015AF37F1EA19DDD00F659A6 /* main.cpp */,
 				015AF3871EA19DF600F659A6 /* Node.h */,
 				015AF3861EA19DF600F659A6 /* Node.cpp */,
@@ -89,6 +104,13 @@
 				014FF4771EA3F82D0020FCA8 /* CharacterModel.h */,
 				015AF38A1EA19F1600F659A6 /* Map.h */,
 				015AF3891EA19F1600F659A6 /* Map.cpp */,
+				0121E6F11EA4125200627386 /* PacMan.cpp */,
+				0121E6F21EA4125200627386 /* PacMan.h */,
+				0121E6F31EA4125200627386 /* SceneNode.cpp */,
+				0121E6F41EA4125200627386 /* SceneNode.h */,
+				0121E6F51EA4125200627386 /* Starter_Class.cpp */,
+				0121E6F61EA4125200627386 /* Wall.h */,
+				0121E6FB1EA4145A00627386 /* Wall.cpp */,
 			);
 			path = pacman;
 			sourceTree = "<group>";
@@ -150,10 +172,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0121E6FC1EA4145A00627386 /* Wall.cpp in Sources */,
 				015AF38B1EA19F1600F659A6 /* Map.cpp in Sources */,
+				0121E6F71EA4125200627386 /* Ghost.cpp in Sources */,
 				014FF4781EA3F82D0020FCA8 /* CharacterModel.cpp in Sources */,
-				015AF3801EA19DDD00F659A6 /* main.cpp in Sources */,
+				0121E6FA1EA4125200627386 /* Starter_Class.cpp in Sources */,
+				0121E6F91EA4125200627386 /* SceneNode.cpp in Sources */,
 				015AF3881EA19DF600F659A6 /* Node.cpp in Sources */,
+				0121E6F81EA4125200627386 /* PacMan.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,7 +279,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				HEADER_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_HEADER_SEARCH_PATHS = /usr/local/include;
 			};
 			name = Debug;
 		};
@@ -261,7 +289,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				HEADER_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_HEADER_SEARCH_PATHS = /usr/local/include;
 			};
 			name = Release;
 		};

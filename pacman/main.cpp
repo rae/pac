@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include <glm/glm.hpp>
 #include "Node.h"
 #include "Map.h"
 
@@ -60,6 +61,9 @@ char ** asciiMap(Map * map);
 void printAsciiMap(char ** asciiMap, int rowCount);
 void overlayAsciiPath(NodeList *path, char **map);
 
+#define USE_MAIN 0
+
+#ifdef USE_MAIN
 int main(int argc, const char * argv[]) {
 	Node * start = nullptr;
 	Node * finish = nullptr;
@@ -88,6 +92,7 @@ int main(int argc, const char * argv[]) {
 
 	return 0;
 }
+#endif
 
 char ** asciiMap(Map * map)
 {
