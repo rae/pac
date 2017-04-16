@@ -1,13 +1,9 @@
 #define _USE_MATH_DEFINES
 
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <bitset>
 
-//#include "Square.h"
-//#include "Rectangle.h"
-//#include "Triangle.h"
-//#include "Circle.h"
 #include "PacMan.h"
 #include "Ghost.h"
 #include "Wall.h"
@@ -33,46 +29,41 @@ const int mapRowCount = sizeof(mapData) / sizeof(mapData[0]);
 
 void handleKeyPresses(unsigned char key, int x, int y)
 {
-	switch (key)
-	{
-	case 'w':
-		player->holdingUp = true;
-		break;
-	case 's':
-		player->holdingDown = true;
-		break;
-	case 'a':
-		player->holdingLeft = true;
-		break;
-	case 'd':
-		player->holdingRight = true;
-		break;
-	default:
-		//do nothing
-		break;
+	switch (key) {
+		case 'w': player->holdingUp = true;		break;
+		case 's': player->holdingDown = true;	break;
+		case 'a': player->holdingLeft = true;	break;
+		case 'd': player->holdingRight = true;	break;
+		default: /* do nothing */				break;
 	}
 }
 
 void handleKeyReleased(unsigned char key, int x, int y)
 {
-	switch (key)
-	{
-	case 'w':
-		player->holdingUp = false;
-		break;
-	case 's':
-		player->holdingDown = false;
-		break;
-	case 'a':
-		player->holdingLeft = false;
-		break;
-	case 'd':
-		player->holdingRight = false;
-		break;
-	default:
-		//do nothing
-		break;
+	switch (key) {
+		case 'w': player->holdingUp = false;	break;
+		case 's': player->holdingDown = false;	break;
+		case 'a': player->holdingLeft = false;	break;
+		case 'd': player->holdingRight = false;	break;
+		default: /* do nothing */				break;
 	}
+}
+
+void resize(int windowWidth, int windowHeight)
+{
+	// prevent divide by zero
+	if(windowHeight == 0) { windowHeight = 1; }
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glViewport(0, 0, windowWidth, windowHeight);
+	gluPerspective(45, 1, 1, 1000);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(0, 0, 5,	// eye position
+			  0, 0, 0,	// what eye is looking at
+			  0.0, 1.0, 0.0); // direction of "up"
 }
 
 void myDisplay(void)
@@ -83,6 +74,15 @@ void myDisplay(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+	// draw ground
+	glColor3f(1, 0, .5);
+	glBegin(GL_QUADS);
+	glVertex3f(200, 0, 200);
+	glVertex3f(-200, 0, 200);
+	glVertex3f(-200, 0, -200);
+	glVertex3f(200, 0, -200);
+	glEnd();
+
 	player->setColor(1.0, 1.0, 0.0);
 	player->render();
 	unsigned long width = strlen(mapData[0]);
@@ -91,8 +91,7 @@ void myDisplay(void)
 	{
 		for (int y = 0; y < mapRowCount; y++)
 		{
-			printf("mapData[%d] = \"%s\"", y, mapData[y]);
-			if (mapData[x][y] == '#')
+			if (mapData[y][x] == '#')
 			{
 				// render new Wall
 			}
@@ -117,8 +116,8 @@ void myDisplay(void)
 	topWall.render();
 	botWall.render();
 
-
-	glFlush();
+	glutSwapBuffers();
+//	glFlush();
 }
 
 
@@ -165,10 +164,11 @@ int main(int argc, char** argv)
 	glutInitWindowSize(900, 900);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("My First Application");
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	
+
 	glutDisplayFunc(myDisplay);
 	glutIdleFunc(myIdleFunc);
+	glutReshapeFunc(resize);
+	glClearColor(0.0, 0.0, 0.0, 0.0);
 
 	glutKeyboardFunc(handleKeyPresses);
 	glutKeyboardUpFunc(handleKeyReleased);
