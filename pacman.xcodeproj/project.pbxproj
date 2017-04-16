@@ -50,7 +50,7 @@
 		015AF3731EA19DDD00F659A6 = {
 			isa = PBXGroup;
 			children = (
-				015AF37E1EA19DDD00F659A6 /* pathFinder */,
+				015AF37E1EA19DDD00F659A6 /* pacman */,
 				015AF37D1EA19DDD00F659A6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -63,7 +63,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		015AF37E1EA19DDD00F659A6 /* pathFinder */ = {
+		015AF37E1EA19DDD00F659A6 /* pacman */ = {
 			isa = PBXGroup;
 			children = (
 				015AF37F1EA19DDD00F659A6 /* main.cpp */,
@@ -74,7 +74,7 @@
 				015AF38A1EA19F1600F659A6 /* Map.h */,
 				015AF3891EA19F1600F659A6 /* Map.cpp */,
 			);
-			path = pathFinder;
+			path = pacman;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -112,7 +112,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 015AF3771EA19DDD00F659A6 /* Build configuration list for PBXProject "pathFinder" */;
+			buildConfigurationList = 015AF3771EA19DDD00F659A6 /* Build configuration list for PBXProject "pacman" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -252,7 +252,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		015AF3771EA19DDD00F659A6 /* Build configuration list for PBXProject "pathFinder" */ = {
+		015AF3771EA19DDD00F659A6 /* Build configuration list for PBXProject "pacman" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				015AF3811EA19DDD00F659A6 /* Debug */,
