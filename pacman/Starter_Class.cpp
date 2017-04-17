@@ -3,6 +3,10 @@
 #include <iostream>
 #include <cmath>
 #include <bitset>
+#include <glm/glm.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
+
+using namespace glm;
 
 #include "PacMan.h"
 #include "Ghost.h"
@@ -55,20 +59,27 @@ void myDisplay(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//Ready to Draw
-	glColor3f(1.0, 1.0, 0.0);
+	glColor3f(0, 0, 0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(0, 0, 0.5, 0, 0, -1, 0, 1, 0);
+
+	gluLookAt(0, 0, .1,		// eye
+			  0, 0, 0,		// centre
+			  0, 1, 0);		// up
 
 	// draw ground
-	glColor3f(1, 1, 1);
-	glBegin(GL_QUADS);
-	const float groundSize = .3;
-	glVertex3f(groundSize, groundSize, 0);
-	glVertex3f(-groundSize, groundSize, 0);
-	glVertex3f(-groundSize, -groundSize, 0);
-	glVertex3f(groundSize, -groundSize, 0);
-	glEnd();
+	float coords[] = { -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5 };
+	for(float z: coords) {
+		glColor4f(.5+z*0.9, 0, 0, 0.25);
+		glBegin(GL_QUADS);
+		const float groundSize = .3;
+		const float offset = z;
+		glVertex3f(groundSize+offset, groundSize+offset, z);
+		glVertex3f(-groundSize+offset, groundSize+offset, z);
+		glVertex3f(-groundSize+offset, -groundSize+offset, z);
+		glVertex3f(groundSize+offset, -groundSize+offset, z);
+		glEnd();
+	}
 
 	player->setColor(1.0, 1.0, 0.0);
 	player->render();
@@ -86,18 +97,20 @@ void myDisplay(void)
 		}
 	}
 
-	Ghost g1 = Ghost(glm::mat4(1.0f), 0.1, 32);
+
+	Ghost g1 = Ghost(mat4(1.0f), 0.1, 32);
 	g1.setColor(1.0, 0.0, 0.0);
 	g1.render();
 
-	Wall leftWall = Wall(glm::translate(glm::mat4(1.0f), glm::vec3(-1.0, 0, 0)), 0.1, 2);
-	Wall rightWall = Wall(glm::translate(glm::mat4(1.0f), glm::vec3(1.0, 0, 0)), 0.1, 2);
-	Wall topWall = Wall(glm::translate(glm::mat4(1.0f), glm::vec3(0, 1.0, 0)), 2, 0.1);
-	Wall botWall = Wall(glm::translate(glm::mat4(1.0f), glm::vec3(0, -1.0, 0)), 2, 0.1);
+	Wall leftWall = Wall(translate(mat4(1.0f), vec3(-1.0, 0, 0)), 0.1, 2);
+	Wall rightWall = Wall(translate(mat4(1.0f), vec3(1.0, 0, 0)), 0.1, 2);
+	Wall topWall = Wall(translate(mat4(1.0f), vec3(0, 1.0, 0)), 2, 0.1);
+	Wall botWall = Wall(translate(mat4(1.0f), vec3(0, -1.0, 0)), 2, 0.1);
 	leftWall.setColor(1.0, 1.0, 1.0);
 	rightWall.setColor(1.0, 1.0, 1.0);
 	topWall.setColor(1.0, 1.0, 1.0);
 	botWall.setColor(1.0, 1.0, 1.0);
+
 	leftWall.render();
 	rightWall.render();
 	topWall.render();
@@ -154,12 +167,12 @@ int main(int argc, char** argv)
 
 	glutDisplayFunc(myDisplay);
 	glutIdleFunc(myIdleFunc);
-	glClearColor(0.3, 0.2, 0.0, 0.0);
+	glClearColor(0, 0, 0, 0);
 
 	glutKeyboardFunc(handleKeyPresses);
 	glutKeyboardUpFunc(handleKeyReleased);
 
-	player = new PacMan(glm::mat4(1.0f), 0.2);
+	player = new PacMan(mat4(1.0f), 0.2);
 	glutMainLoop();
 	return 0;
 }

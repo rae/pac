@@ -1,10 +1,15 @@
-#include "SceneNode.h"
 ///////////////////////////////////////////////////////////////////////
 //
 // SceneNode.cpp
 //
 ///////////////////////////////////////////////////////////////////////
+
+#include <glm/gtx/matrix_decompose.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include "SceneNode.h"
+
 using namespace std;
+using namespace glm;
 
 #ifndef M_PI
 #define M_PI 3.1415926f
@@ -12,7 +17,7 @@ using namespace std;
 
 #define DEGREES_PER_RADIAN (360.0 / (2*M_PI))
 
-SceneNode::SceneNode(glm::mat4 aTransformation, float aScale)
+SceneNode::SceneNode(mat4 aTransformation, float aScale)
 {
 	transformation = aTransformation;
 	parent = nullptr;
@@ -41,7 +46,7 @@ void SceneNode::addChild(SceneNode* child)
 
 }
 
-glm::mat4 SceneNode::getTransformationMatrix()
+mat4 SceneNode::getTransformationMatrix()
 {
 	return transformation;
 }
@@ -58,13 +63,13 @@ SceneNode* SceneNode::getParent()
 void SceneNode::render()
 {
 	//Step One: getMyTransformation
-	glm::mat4 transf = getTransformationMatrix();
-	glm::vec3 myScale;
-	glm::quat rotation;
-	glm::vec3 translation;
-	glm::vec3 skew;
-	glm::vec4 perspective;
-	glm::decompose(transf, myScale, rotation, translation, skew, perspective);
+	mat4 transf = getTransformationMatrix();
+	vec3 myScale;
+	quat rotation;
+	vec3 translation;
+	vec3 skew;
+	vec4 perspective;
+	decompose(transf, myScale, rotation, translation, skew, perspective);
 
 	//Step Two: glPushMatrix(My Transformation)
 	glPushMatrix();
@@ -72,8 +77,8 @@ void SceneNode::render()
 	float sqrtOfW = sqrt(1 - rotation.w * rotation.w);
 	glRotatef(DEGREES_PER_RADIAN * 2 * acos(rotation.w), rotation.x / sqrtOfW, rotation.y / sqrtOfW, rotation.z / sqrtOfW);
 
-	//Step Three: Draw myself
-	glColor3f(r, g, b);
+	//Step Three: Draw myself, a bit transparent
+	glColor4f(r, g, b, 0.75);
 	draw(scale);
 
 
@@ -91,5 +96,5 @@ void SceneNode::render()
 
 void SceneNode::translateBy(float x, float y)
 {
-	transformation = glm::translate(transformation, glm::vec3(x, y, 0));
+	transformation = translate(transformation, vec3(x, y, 0));
 }

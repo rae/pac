@@ -12,6 +12,8 @@ void PacMan::draw(float scale)
 	glVertex2f(scale / 2, -scale / 2);
 	glVertex2f(scale / 2, scale / 2);
 	glVertex2f(-scale / 2, scale / 2);
+//	// 16 slices, 4 stacks
+//	glutSolidSphere(scale, 16, 4);
 	glEnd();
 }
 

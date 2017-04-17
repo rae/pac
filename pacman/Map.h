@@ -1,13 +1,13 @@
 //
-//  Map.hpp
+//  Map.h
 //  pathFinder
 //
 //  Created by Reid Ellis on 2017-04-14.
 //  Copyright © 2017 Tnir Technologies. All rights reserved.
 //
 
-#ifndef Map_hpp
-#define Map_hpp
+#ifndef Map_h
+#define Map_h
 
 class Node;
 
@@ -36,4 +36,4 @@ struct Map {
 private:
 	void clearMap();
 };
-#endif /* Map_hpp */
+#endif /* Map_h */
