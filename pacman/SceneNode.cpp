@@ -16,7 +16,7 @@ SceneNode::SceneNode(glm::mat4 aTransformation, float aScale)
 {
 	transformation = aTransformation;
 	parent = nullptr;
-	children = std::vector<SceneNode*>();
+	children = vector<SceneNode*>();
 	scale = aScale;
 	r = 1.0f;
 	g = 1.0f;
@@ -37,7 +37,7 @@ void SceneNode::setParent(SceneNode* p)
 void SceneNode::addChild(SceneNode* child)
 {
 	children.push_back(child);
-	(*child).setParent(this);
+	child->setParent(this);
 
 }
 
@@ -46,7 +46,7 @@ glm::mat4 SceneNode::getTransformationMatrix()
 	return transformation;
 }
 
-std::vector<SceneNode*> SceneNode::getChildren()
+vector<SceneNode*> SceneNode::getChildren()
 {
 	return children;
 }
@@ -72,17 +72,14 @@ void SceneNode::render()
 	float sqrtOfW = sqrt(1 - rotation.w * rotation.w);
 	glRotatef(DEGREES_PER_RADIAN * 2 * acos(rotation.w), rotation.x / sqrtOfW, rotation.y / sqrtOfW, rotation.z / sqrtOfW);
 
-
 	//Step Three: Draw myself
 	glColor3f(r, g, b);
 	draw(scale);
 
 
 	//Step Four: Render My Children
-	for (int i = 0; i < children.size(); i++)
-	{
-		SceneNode* tmp = children.at(i);
-		(*tmp).render();
+	for(SceneNode *node : children) {
+		node->render();
 	}
 
 	//Final Step: glPopMatrix()

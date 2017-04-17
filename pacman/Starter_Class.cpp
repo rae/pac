@@ -45,42 +45,29 @@ void handleKeyReleased(unsigned char key, int x, int y)
 		case 's': player->holdingDown = false;	break;
 		case 'a': player->holdingLeft = false;	break;
 		case 'd': player->holdingRight = false;	break;
+		// esc quits
+		case '\e': exit(0);						break;
 		default: /* do nothing */				break;
 	}
 }
 
-void resize(int windowWidth, int windowHeight)
-{
-	// prevent divide by zero
-	if(windowHeight == 0) { windowHeight = 1; }
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glViewport(0, 0, windowWidth, windowHeight);
-	gluPerspective(45, 1, 1, 1000);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(0, 0, 5,	// eye position
-			  0, 0, 0,	// what eye is looking at
-			  0.0, 1.0, 0.0); // direction of "up"
-}
-
 void myDisplay(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//Ready to Draw
 	glColor3f(1.0, 1.0, 0.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	gluLookAt(0, 0, 0.5, 0, 0, -1, 0, 1, 0);
 
 	// draw ground
-	glColor3f(1, 0, .5);
+	glColor3f(1, 1, 1);
 	glBegin(GL_QUADS);
-	glVertex3f(200, 0, 200);
-	glVertex3f(-200, 0, 200);
-	glVertex3f(-200, 0, -200);
-	glVertex3f(200, 0, -200);
+	const float groundSize = .3;
+	glVertex3f(groundSize, groundSize, 0);
+	glVertex3f(-groundSize, groundSize, 0);
+	glVertex3f(-groundSize, -groundSize, 0);
+	glVertex3f(groundSize, -groundSize, 0);
 	glEnd();
 
 	player->setColor(1.0, 1.0, 0.0);
@@ -160,15 +147,14 @@ void genMap()
 int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize(900, 900);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("My First Application");
 
 	glutDisplayFunc(myDisplay);
 	glutIdleFunc(myIdleFunc);
-	glutReshapeFunc(resize);
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearColor(0.3, 0.2, 0.0, 0.0);
 
 	glutKeyboardFunc(handleKeyPresses);
 	glutKeyboardUpFunc(handleKeyReleased);
