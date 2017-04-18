@@ -7,6 +7,7 @@
 #include <glm/gtx/matrix_decompose.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "SceneNode.h"
+#include "Map.h"
 
 using namespace std;
 using namespace glm;
@@ -28,6 +29,25 @@ SceneNode::SceneNode(mat4 aTransformation, float aScale)
 	b = 1.0f;
 }
 
+SceneNode::SceneNode(int x, int y)
+: transformation(mat4(1.0)),
+  parent(nullptr),
+  children(vector<SceneNode*>()),
+  scale(1.0),
+  r(1.0),
+  g(1.0),
+  b(1.0),
+  gridx(x),
+  gridy(y)
+{
+	gridMoveTo(gridx, gridy);
+}
+
+SceneNode::~SceneNode()
+{
+	children.clear();
+}
+
 void SceneNode::setColor(float R, float G, float B)
 {
 	r = R;
@@ -43,7 +63,6 @@ void SceneNode::addChild(SceneNode* child)
 {
 	children.push_back(child);
 	child->setParent(this);
-
 }
 
 mat4 SceneNode::getTransformationMatrix()
@@ -60,6 +79,30 @@ SceneNode* SceneNode::getParent()
 	return parent;
 }
 
+vec3 SceneNode::getScale()
+{
+	mat4 transf = getTransformationMatrix();
+	vec3 myScale;
+	quat rotation;
+	vec3 translation;
+	vec3 skew;
+	vec4 perspective;
+	decompose(transf, myScale, rotation, translation, skew, perspective);
+	return myScale;
+}
+
+vec3 SceneNode::getTranslation()
+{
+	mat4 transf = getTransformationMatrix();
+	vec3 myScale;
+	quat rotation;
+	vec3 translation;
+	vec3 skew;
+	vec4 perspective;
+	decompose(transf, myScale, rotation, translation, skew, perspective);
+	return translation;
+}
+
 void SceneNode::render()
 {
 	//Step One: getMyTransformation
@@ -73,14 +116,16 @@ void SceneNode::render()
 
 	//Step Two: glPushMatrix(My Transformation)
 	glPushMatrix();
+//	printf("translating by (%g, %g, %g)\n", translation.x, translation.y, translation.z);
 	glTranslatef(translation.x, translation.y, translation.z);
 	float sqrtOfW = sqrt(1 - rotation.w * rotation.w);
+//	printf("rotating by (%g, %g, %g)\n", rotation.x, rotation.y, rotation.z);
 	glRotatef(DEGREES_PER_RADIAN * 2 * acos(rotation.w), rotation.x / sqrtOfW, rotation.y / sqrtOfW, rotation.z / sqrtOfW);
 
 	//Step Three: Draw myself, a bit transparent
 	glColor4f(r, g, b, 0.75);
-	draw(scale);
-
+//	printf("drawing at scale %g\n", myScale.x);
+	draw(myScale.x);
 
 	//Step Four: Render My Children
 	for(SceneNode *node : children) {
@@ -94,7 +139,20 @@ void SceneNode::render()
 
 }
 
+void SceneNode::gridMoveTo(int x, int y)
+{
+	float mapWidth = Map::sharedMap()->width;
+	float mapHeight = Map::sharedMap()->height;
+	float xf = x;
+	float yf = y;
+	transformation = translate(mat4(1.0), vec3((xf-mapWidth/2.0)*kMapScale, (yf-mapHeight/2.0)*kMapScale, 0));
+}
+
 void SceneNode::translateBy(float x, float y)
 {
 	transformation = translate(transformation, vec3(x, y, 0));
+}
+
+void SceneNode::draw(float scale)
+{
 }

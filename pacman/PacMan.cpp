@@ -28,6 +28,9 @@ void PacMan::initPacMan()
 	speed = glm::vec3(0.0, 0.0, 0.0);
 
 	movementSpeedFactor = 0.5f;
+	gridx = 13;
+	gridy = 23;
+	gridMoveTo(gridx, gridy);
 }
 
 void PacMan::move(double deltaTime)

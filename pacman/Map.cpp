@@ -6,11 +6,38 @@
 //  Copyright © 2017 Tnir Technologies. All rights reserved.
 //
 
+#include <iostream>
 #include <assert.h>
 #include "Map.h"
 #include "Node.h"
+#include "Wall.h"
+#include "PacMan.h"
+
+using namespace std;
+
+static Map * g_map = nullptr;
 
 inline bool ispath(char c) { return c != '#'; }
+inline bool iswall(char c) { return c == '#'; }
+
+Map::Map()
+	: mapNodes(nullptr),
+	height(0),
+	width(0),
+	SceneNode(mat4(1.0f), 1.0)
+{
+	g_map = this;
+}
+
+Map::~Map()
+{
+	clearMap();
+}
+
+Map * Map::sharedMap()
+{
+	return g_map;
+}
 
 void Map::parseMap(const char *strings[], int rowCount)
 {
@@ -49,8 +76,23 @@ void Map::parseMap(const char *strings[], int rowCount)
 			mapNodes[y][x] = new Node(x, y, this);
 			// canBePath is true if the string has a space here
 			mapNodes[y][x]->canBePath = ispath(strings[y][x]);
+			if (iswall(strings[y][x])) {
+				const float kMapScale = 0.06;
+				float xPos = x - 0.5*width;
+				float yPos = y - 0.5*width;
+				Wall * wall = new Wall(xPos*kMapScale, yPos*kMapScale, kMapScale);
+				wall->gridMoveTo(x, y);
+				wall->setColor(0, 0, 0.75);
+				addChild(wall);
+				mapNodes[y][x]->sceneNode = wall;
+			} else {
+				SceneNode * space = new SceneNode(x, y);
+				mapNodes[y][x]->sceneNode = space;
+			}
 		}
 	}
+	pacman = new PacMan(mat4(1.0f), kMapScale);
+	pacman->setColor(1.0, 1.0, 0.0);
 }
 
 void Map::clearMap()
@@ -68,9 +110,20 @@ void Map::clearMap()
 Node * Map::nodeAt(int x, int y)
 {
 	Node * node = nullptr;
-	// bounds checking
-	if(x >= 0 && x < width && y >= 0 && y < height) {
+	// sanity checking
+	if(mapNodes != nullptr && x >= 0 && x < width && y >= 0 && y < height) {
 		node = mapNodes[y][x];
 	}
 	return node;
+}
+
+void Map::draw(float scale)
+{
+//	cout << "############ Drawing Map (scale=" << scale << ")" << endl;
+	//Step Four: Render My Children
+	pacman->render();
+	for (SceneNode *node : children) {
+		node->render();
+	}
+//	cout << "############ Finished Map" << endl;
 }

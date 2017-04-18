@@ -11,19 +11,26 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "Node.h"
+
+using namespace glm;
+using namespace std;
 
 class SceneNode
 {
 protected:
-	std::vector<SceneNode*> children;
+	vector<SceneNode*> children;
 	SceneNode* parent;
-	glm::mat4 transformation;
+	mat4 transformation;
 	float r, g, b;
 	float scale;
+	NodeList *path;
 
 public:
 	//Constructor
 	SceneNode(glm::mat4 transformation, float scale);
+	SceneNode(int x, int y);
+	virtual ~SceneNode();
 
 	//Methods
 	void addChild(SceneNode*);
@@ -33,7 +40,15 @@ public:
 	SceneNode* getParent();
 	void setParent(SceneNode* p);
 	void render();
-	virtual void draw(float scale) = 0;
+
+	vec3 getScale();
+	vec3 getTranslation();
+
+	virtual void draw(float scale);
 	void translateBy(float x, float y);
+	void gridMoveTo(int x, int y);
+
+	int gridx;
+	int gridy;
 };
 #endif // !SCENENODE_HEADER

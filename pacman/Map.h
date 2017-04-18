@@ -9,11 +9,20 @@
 #ifndef Map_h
 #define Map_h
 
+#include "SceneNode.h"
+#include "PacMan.h"
+
 class Node;
 
-struct Map {
+extern const float kMapScale;
+
+struct Map : SceneNode {
 	// constructor
-	Map() : mapNodes(nullptr), height(0), width(0) {}
+	Map();
+
+	virtual ~Map();
+
+	static Map * sharedMap();
 
 	// node access
 	Node * nodeAt(int x, int y);
@@ -26,10 +35,16 @@ struct Map {
 	// map population via ASCII strings
 	void parseMap(const char *strings[], int rowCount);
 
+	// draw all the SceneNodes that represent the map
+	void draw(float scale);
+
 	//
 	// Node data
 	//
 	Node *** mapNodes; // yes, a triple-pointer
+
+	PacMan *pacman;
+	
 	int height;
 	int width;
 

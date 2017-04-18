@@ -63,7 +63,7 @@ void overlayAsciiPath(NodeList *path, char **map);
 
 #define USE_MAIN 0
 
-#ifdef USE_MAIN
+#if USE_MAIN
 int main(int argc, const char * argv[]) {
 	Node * start = nullptr;
 	Node * finish = nullptr;

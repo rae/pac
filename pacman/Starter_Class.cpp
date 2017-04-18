@@ -14,10 +14,11 @@ using namespace glm;
 #include "Map.h"
 #include "Node.h"
 
-PacMan* player;
 static float rotation_angle = -M_PI;
 static float rotation_delta = 0.0001;
 static float x, y=0;
+static Map * g_map = nullptr;
+static Node ***map_nodes = nullptr;
 int oldTimeSinceStart = 0;
 
 const char * mapData[] = {
@@ -29,10 +30,48 @@ const char * mapData[] = {
 };
 const int mapRowCount = sizeof(mapData) / sizeof(mapData[0]);
 
+const char *pacData[] = {
+	//    123456789 123456789 1234567
+	"############################", // 0
+	"#            ##            #", // 1
+	"# #### ##### ## ##### #### #", // 2
+	"# #### ##### ## ##### #### #", // 3
+	"# #### ##### ## ##### #### #", // 4
+	"#                          #", // 5
+	"# #### ## ######## ## #### #", // 6
+	"# #### ## ######## ## #### #", // 7
+	"#      ##    ##    ##      #", // 8
+	"###### ##### ## ##### ######", // 9
+	"###### ##### ## ##### ######", // 10
+	"###### ##          ## ######", // 11
+	"###### ## ######## ## ######", // 12
+	"###### ## ######## ## ######", // 13
+	"          ########          ", // 14
+	"###### ## ######## ## ######", // 15
+	"###### ## ######## ## ######", // 16
+	"###### ##          ## ######", // 17
+	"###### ## ######## ## ######", // 18
+	"###### ## ######## ## ######", // 19
+	"#            ##            #", // 20
+	"# #### ##### ## ##### #### #", // 21
+	"# #### ##### ## ##### #### #", // 22
+	"#   ##                ##   #", // 23
+	"### ## ## ######## ## ## ###", // 24
+	"### ## ## ######## ## ## ###", // 25
+	"#      ##    ##    ##      #", // 26
+	"# ########## ## ########## #", // 27
+	"# ########## ## ########## #", // 28
+	"#                          #", // 29
+	"############################"  // 30
+									//    123456789 123456789 1234567
+};
+const int pacRowCount = sizeof(pacData) / sizeof(pacData[0]);
+
 
 
 void handleKeyPresses(unsigned char key, int x, int y)
 {
+	PacMan * player = Map::sharedMap()->pacman;
 	switch (key) {
 		case 'w': player->holdingUp = true;		break;
 		case 's': player->holdingDown = true;	break;
@@ -44,6 +83,7 @@ void handleKeyPresses(unsigned char key, int x, int y)
 
 void handleKeyReleased(unsigned char key, int x, int y)
 {
+	PacMan * player = Map::sharedMap()->pacman;
 	switch (key) {
 		case 'w': player->holdingUp = false;	break;
 		case 's': player->holdingDown = false;	break;
@@ -63,45 +103,42 @@ void myDisplay(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+#define WANT_GROUND 1
+
+#if WANT_GROUND
 	gluLookAt(0, 0, .1,		// eye
 			  0, 0, 0,		// centre
 			  0, 1, 0);		// up
 
 	// draw ground
-	float coords[] = { -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5 };
+	float coords[] = { -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 };
+	const float groundSize = .1;
 	for(float z: coords) {
-		glColor4f(.5+z*0.9, 0, 0, 0.25);
+		glColor4f(.5+z*0.5, 0, 0, 0.25);
 		glBegin(GL_QUADS);
-		const float groundSize = .3;
-		const float offset = z;
-		glVertex3f(groundSize+offset, groundSize+offset, z);
-		glVertex3f(-groundSize+offset, groundSize+offset, z);
-		glVertex3f(-groundSize+offset, -groundSize+offset, z);
-		glVertex3f(groundSize+offset, -groundSize+offset, z);
+		glVertex3f(groundSize+z, groundSize+z, z);
+		glVertex3f(-groundSize+z, groundSize+z, z);
+		glVertex3f(-groundSize+z, -groundSize+z, z);
+		glVertex3f(groundSize+z, -groundSize+z, z);
 		glEnd();
 	}
+#endif
 
-	player->setColor(1.0, 1.0, 0.0);
-	player->render();
-	unsigned long width = strlen(mapData[0]);
-
-	for (int x = 0; x < width; x++)
-	{
-		for (int y = 0; y < mapRowCount; y++)
-		{
-			if (mapData[y][x] == '#')
-			{
-				// render new Wall
-			}
-			//else if (mapData[x][y] == ' ')
-		}
+	//
+	// draw map
+	//
+	if (g_map != nullptr) {
+		g_map->render();
 	}
+
 
 
 	Ghost g1 = Ghost(mat4(1.0f), 0.1, 32);
+	Ghost g2 = Ghost(1, 1);
 	g1.setColor(1.0, 0.0, 0.0);
 	g1.render();
 
+	/*
 	Wall leftWall = Wall(translate(mat4(1.0f), vec3(-1.0, 0, 0)), 0.1, 2);
 	Wall rightWall = Wall(translate(mat4(1.0f), vec3(1.0, 0, 0)), 0.1, 2);
 	Wall topWall = Wall(translate(mat4(1.0f), vec3(0, 1.0, 0)), 2, 0.1);
@@ -115,6 +152,7 @@ void myDisplay(void)
 	rightWall.render();
 	topWall.render();
 	botWall.render();
+	*/
 
 	glutSwapBuffers();
 //	glFlush();
@@ -135,6 +173,7 @@ void myIdleFunc()
 	int deltaTime = timeSinceStart - oldTimeSinceStart;
 	oldTimeSinceStart = timeSinceStart;
 
+	PacMan * player = Map::sharedMap()->pacman;
 	player->move(deltaTime / 1000.0f);
 
 	glutPostRedisplay();
@@ -171,8 +210,8 @@ int main(int argc, char** argv)
 
 	glutKeyboardFunc(handleKeyPresses);
 	glutKeyboardUpFunc(handleKeyReleased);
-
-	player = new PacMan(mat4(1.0f), 0.2);
+	g_map = new Map();
+	g_map->parseMap(pacData, pacRowCount);
 	glutMainLoop();
 	return 0;
 }

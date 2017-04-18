@@ -10,6 +10,7 @@ class Ghost : public SceneNode
 {
 public:
 	Ghost(glm::mat4 transformation, float scale, int sides);
+	Ghost(int gridx, int gridy);
 	void draw(float radius) override;
 	int sides;
 };

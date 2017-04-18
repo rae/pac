@@ -34,8 +34,15 @@ Node::Node(int inX, int inY, Map *inMap)
   srcDistance(0),
   destDistance(0),
   parent(nullptr),
+  sceneNode(nullptr),
   map(inMap)
 {
+}
+
+Node::~Node()
+{
+	delete sceneNode;
+	sceneNode = nullptr;
 }
 
 int Node::gridDistanceTo(Node *dest)

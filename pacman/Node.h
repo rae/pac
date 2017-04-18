@@ -13,6 +13,7 @@
 
 struct Node;
 struct Map;
+class SceneNode;
 
 typedef std::list<Node *> NodeList;
 
@@ -38,12 +39,17 @@ struct Node {
 	// which map does this node belong to?
 	Map * map;
 
+	// the SceneNode for this map node
+	SceneNode * sceneNode;
+
 	//
 	// methods
 	//
 
 	// trivial constructor sets x, y
 	Node(int inX, int inY, Map *inMap);
+	// destructor
+	virtual ~Node();
 
 	// "f"
 	float totalCost() { return srcDistance + destDistance; }
