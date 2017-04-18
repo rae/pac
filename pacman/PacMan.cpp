@@ -24,13 +24,15 @@ void PacMan::initPacMan()
 	holdingLeft = false;
 	holdingRight = false;
 
+	gridX = 13;
+	gridY = 11;
+
 	position = glm::vec3(0.0, 0.0, 0.0);
 	speed = glm::vec3(0.0, 0.0, 0.0);
 
+	gridMoveTo(gridX, gridY);
+
 	movementSpeedFactor = 0.5f;
-	gridx = 13;
-	gridy = 23;
-	gridMoveTo(gridx, gridy);
 }
 
 void PacMan::move(double deltaTime)

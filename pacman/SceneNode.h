@@ -24,7 +24,7 @@ protected:
 	mat4 transformation;
 	float r, g, b;
 	float scale;
-	NodeList *path;
+	NodeList* path;
 
 public:
 	//Constructor
@@ -48,7 +48,6 @@ public:
 	void translateBy(float x, float y);
 	void gridMoveTo(int x, int y);
 
-	int gridx;
-	int gridy;
+	int gridX, gridY;
 };
 #endif // !SCENENODE_HEADER

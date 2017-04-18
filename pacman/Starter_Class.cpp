@@ -37,7 +37,7 @@ const char *pacData[] = {
 	"# #### ##### ## ##### #### #", // 2
 	"# #### ##### ## ##### #### #", // 3
 	"# #### ##### ## ##### #### #", // 4
-	"#                          #", // 5
+	"#     @  @                 #", // 5
 	"# #### ## ######## ## #### #", // 6
 	"# #### ## ######## ## #### #", // 7
 	"#      ##    ##    ##      #", // 8
@@ -49,7 +49,7 @@ const char *pacData[] = {
 	"          ########          ", // 14
 	"###### ## ######## ## ######", // 15
 	"###### ## ######## ## ######", // 16
-	"###### ##          ## ######", // 17
+	"###### ##@         ## ######", // 17
 	"###### ## ######## ## ######", // 18
 	"###### ## ######## ## ######", // 19
 	"#            ##            #", // 20
@@ -71,7 +71,7 @@ const int pacRowCount = sizeof(pacData) / sizeof(pacData[0]);
 
 void handleKeyPresses(unsigned char key, int x, int y)
 {
-	PacMan * player = Map::sharedMap()->pacman;
+	PacMan* player = Map::sharedMap()->pacMan;
 	switch (key) {
 		case 'w': player->holdingUp = true;		break;
 		case 's': player->holdingDown = true;	break;
@@ -83,7 +83,7 @@ void handleKeyPresses(unsigned char key, int x, int y)
 
 void handleKeyReleased(unsigned char key, int x, int y)
 {
-	PacMan * player = Map::sharedMap()->pacman;
+	PacMan* player = Map::sharedMap()->pacMan;
 	switch (key) {
 		case 'w': player->holdingUp = false;	break;
 		case 's': player->holdingDown = false;	break;
@@ -103,7 +103,7 @@ void myDisplay(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-#define WANT_GROUND 1
+#define WANT_GROUND 0
 
 #if WANT_GROUND
 	gluLookAt(0, 0, .1,		// eye
@@ -111,15 +111,16 @@ void myDisplay(void)
 			  0, 1, 0);		// up
 
 	// draw ground
-	float coords[] = { -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 };
-	const float groundSize = .1;
+	float coords[] = { -0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5 };
 	for(float z: coords) {
-		glColor4f(.5+z*0.5, 0, 0, 0.25);
+		glColor4f(.5+z*0.9, 0, 0, 0.25);
 		glBegin(GL_QUADS);
-		glVertex3f(groundSize+z, groundSize+z, z);
-		glVertex3f(-groundSize+z, groundSize+z, z);
-		glVertex3f(-groundSize+z, -groundSize+z, z);
-		glVertex3f(groundSize+z, -groundSize+z, z);
+		const float groundSize = .3;
+		const float offset = z;
+		glVertex3f(groundSize+offset, groundSize+offset, z);
+		glVertex3f(-groundSize+offset, groundSize+offset, z);
+		glVertex3f(-groundSize+offset, -groundSize+offset, z);
+		glVertex3f(groundSize+offset, -groundSize+offset, z);
 		glEnd();
 	}
 #endif
@@ -131,28 +132,9 @@ void myDisplay(void)
 		g_map->render();
 	}
 
-
-
-	Ghost g1 = Ghost(mat4(1.0f), 0.1, 32);
 	Ghost g2 = Ghost(1, 1);
-	g1.setColor(1.0, 0.0, 0.0);
-	g1.render();
-
-	/*
-	Wall leftWall = Wall(translate(mat4(1.0f), vec3(-1.0, 0, 0)), 0.1, 2);
-	Wall rightWall = Wall(translate(mat4(1.0f), vec3(1.0, 0, 0)), 0.1, 2);
-	Wall topWall = Wall(translate(mat4(1.0f), vec3(0, 1.0, 0)), 2, 0.1);
-	Wall botWall = Wall(translate(mat4(1.0f), vec3(0, -1.0, 0)), 2, 0.1);
-	leftWall.setColor(1.0, 1.0, 1.0);
-	rightWall.setColor(1.0, 1.0, 1.0);
-	topWall.setColor(1.0, 1.0, 1.0);
-	botWall.setColor(1.0, 1.0, 1.0);
-
-	leftWall.render();
-	rightWall.render();
-	topWall.render();
-	botWall.render();
-	*/
+	g2.setColor(1.0, 0.0, 0.0);
+	g2.render();
 
 	glutSwapBuffers();
 //	glFlush();
@@ -173,7 +155,7 @@ void myIdleFunc()
 	int deltaTime = timeSinceStart - oldTimeSinceStart;
 	oldTimeSinceStart = timeSinceStart;
 
-	PacMan * player = Map::sharedMap()->pacman;
+	PacMan* player = Map::sharedMap()->pacMan;
 	player->move(deltaTime / 1000.0f);
 
 	glutPostRedisplay();
@@ -212,6 +194,7 @@ int main(int argc, char** argv)
 	glutKeyboardUpFunc(handleKeyReleased);
 	g_map = new Map();
 	g_map->parseMap(pacData, pacRowCount);
+	
 	glutMainLoop();
 	return 0;
 }

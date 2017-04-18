@@ -17,7 +17,6 @@ Wall::Wall(float x, float y, float scale)
 void Wall::draw(float scale)
 {
 	glBegin(GL_POLYGON);
-//	printf("drawing Wall inside (%g, %g)-(%g, %g)\n", -height/2, -height/2, height/2, height/2);
 	glVertex2f(-height / 2, -height / 2);
 	glVertex2f(height / 2, -height / 2);
 	glVertex2f(height / 2, height / 2);

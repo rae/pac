@@ -1,11 +1,10 @@
 #define _USE_MATH_DEFINES
 
 #include <math.h>
-#include <glm/glm.hpp>
 #include "Ghost.h"
 #include "Map.h"
-
-using namespace glm;
+#include "Node.h"
+#include "PacMan.h"
 
 Ghost::Ghost(glm::mat4 aTransformation, float scale, int sides) : SceneNode(aTransformation, scale)
 {
@@ -13,17 +12,16 @@ Ghost::Ghost(glm::mat4 aTransformation, float scale, int sides) : SceneNode(aTra
 }
 
 Ghost::Ghost(int x, int y)
-: SceneNode(x, y),
-  sides(16)
+	: SceneNode(x, y), sides(16)
 {
 	scale = kMapScale;
-	Node * node = Map::sharedMap()->nodeAt(gridx, gridy);
+	Node* node = Map::sharedMap()->nodeAt(x, y);
 	assert(node != nullptr);
-	delete path;
-	PacMan *pacman = Map::sharedMap()->pacman;
-	Node * pacnode = Map::sharedMap()->nodeAt(pacman->gridx, pacman->gridy);
-	assert(pacnode != nullptr);
-	path = node->pathToNode(pacnode);
+	delete(path);
+	PacMan* pacMan = Map::sharedMap()->pacMan;
+	Node* pacNode = Map::sharedMap()->nodeAt(pacMan->gridX, pacMan->gridY);
+	assert(pacNode != nullptr);
+	path = node->pathToNode(pacNode);
 }
 
 void Ghost::draw(float radius)
@@ -34,7 +32,7 @@ void Ghost::draw(float radius)
 	{
 		GLfloat x = sin(i);
 		GLfloat y = cos(i);
-		glVertex2f(radius * x, radius * y);
+		glVertex2f((radius/2) * x, (radius/2) * y);
 	}
 	glEnd();
 }

@@ -9,10 +9,14 @@
 #ifndef Map_h
 #define Map_h
 
+#include <vector>
 #include "SceneNode.h"
-#include "PacMan.h"
+
+using namespace std;
 
 class Node;
+class PacMan;
+class Ghost;
 
 extern const float kMapScale;
 
@@ -22,7 +26,7 @@ struct Map : SceneNode {
 
 	virtual ~Map();
 
-	static Map * sharedMap();
+	static Map* sharedMap();
 
 	// node access
 	Node * nodeAt(int x, int y);
@@ -42,9 +46,8 @@ struct Map : SceneNode {
 	// Node data
 	//
 	Node *** mapNodes; // yes, a triple-pointer
-
-	PacMan *pacman;
-	
+	PacMan* pacMan;
+	vector<Ghost *> ghosts;
 	int height;
 	int width;
 

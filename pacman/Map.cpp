@@ -6,19 +6,20 @@
 //  Copyright © 2017 Tnir Technologies. All rights reserved.
 //
 
-#include <iostream>
 #include <assert.h>
 #include "Map.h"
 #include "Node.h"
 #include "Wall.h"
 #include "PacMan.h"
+#include "Ghost.h"
 
-using namespace std;
+static Map* g_map = nullptr;
 
-static Map * g_map = nullptr;
+const float kMapScale = 0.06;
 
 inline bool ispath(char c) { return c != '#'; }
 inline bool iswall(char c) { return c == '#'; }
+inline bool isghost(char c) { return c == '@'; }
 
 Map::Map()
 	: mapNodes(nullptr),
@@ -34,7 +35,7 @@ Map::~Map()
 	clearMap();
 }
 
-Map * Map::sharedMap()
+Map* Map::sharedMap()
 {
 	return g_map;
 }
@@ -49,6 +50,7 @@ void Map::parseMap(const char *strings[], int rowCount)
 		return;
 	}
 
+	vector<int> ghostPlaces;
 	//
 	// about the mapNodes triple-pointer..
 	//
@@ -66,33 +68,47 @@ void Map::parseMap(const char *strings[], int rowCount)
 	height = rowCount;
 
 	// populate the rows
-	for(int y=0; y<height; y++) {
+	for(int y=0; y<height; y++)
+	{
 		// allocate an array of Node pointers and point the row pointer at them
 		mapNodes[y] = new Node*[width];
 		// validate the data
 		assert(strings[y] != nullptr && strlen(strings[y]) == width);
 		// create this row of nodes
-		for(int x=0; x<width; x++) {
+		for(int x=0; x<width; x++)
+		{
 			mapNodes[y][x] = new Node(x, y, this);
+			char mapChar = strings[y][x];
 			// canBePath is true if the string has a space here
-			mapNodes[y][x]->canBePath = ispath(strings[y][x]);
-			if (iswall(strings[y][x])) {
-				const float kMapScale = 0.06;
-				float xPos = x - 0.5*width;
-				float yPos = y - 0.5*width;
+			mapNodes[y][x]->canBePath = ispath(mapChar);
+			if (iswall(mapChar))
+			{
+				float xPos = x - (0.5*width);
+				float yPos = y - (0.5*width);
 				Wall * wall = new Wall(xPos*kMapScale, yPos*kMapScale, kMapScale);
 				wall->gridMoveTo(x, y);
 				wall->setColor(0, 0, 0.75);
 				addChild(wall);
 				mapNodes[y][x]->sceneNode = wall;
-			} else {
-				SceneNode * space = new SceneNode(x, y);
+			}
+			else
+			{
+				SceneNode* space = new SceneNode(x, y);
 				mapNodes[y][x]->sceneNode = space;
+				if (isghost(mapChar)) {
+					ghostPlaces.push_back(x);
+					ghostPlaces.push_back(y);
+				}
 			}
 		}
 	}
-	pacman = new PacMan(mat4(1.0f), kMapScale);
-	pacman->setColor(1.0, 1.0, 0.0);
+
+	pacMan = new PacMan(mat4(1.0f), kMapScale);
+	pacMan->setColor(1.0, 1.0, 0.0);
+	for (int i = 0; i < ghostPlaces.size(); i += 2) {
+		Ghost * ghost = new Ghost(ghostPlaces[i], ghostPlaces[i + 1]);
+		ghosts.push_back(ghost);
+	}
 }
 
 void Map::clearMap()
@@ -119,11 +135,9 @@ Node * Map::nodeAt(int x, int y)
 
 void Map::draw(float scale)
 {
-//	cout << "############ Drawing Map (scale=" << scale << ")" << endl;
 	//Step Four: Render My Children
-	pacman->render();
+	pacMan->render();
 	for (SceneNode *node : children) {
-		node->render();
+		node->draw(scale);
 	}
-//	cout << "############ Finished Map" << endl;
 }
