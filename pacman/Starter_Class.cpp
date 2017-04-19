@@ -132,10 +132,6 @@ void myDisplay(void)
 		g_map->render();
 	}
 
-	Ghost g2 = Ghost(1, 1);
-	g2.setColor(1.0, 0.0, 0.0);
-	g2.render();
-
 	glutSwapBuffers();
 //	glFlush();
 }
