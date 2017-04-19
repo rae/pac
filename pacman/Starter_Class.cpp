@@ -19,7 +19,7 @@ static float rotation_delta = 0.0001;
 static float x, y=0;
 static Map * g_map = nullptr;
 static Node ***map_nodes = nullptr;
-int oldTimeSinceStart = 0;
+int gLastTime = 0;
 
 const char * mapData[] = {
 	"#######",
@@ -90,7 +90,7 @@ void handleKeyReleased(unsigned char key, int x, int y)
 		case 'a': player->holdingLeft = false;	break;
 		case 'd': player->holdingRight = false;	break;
 		// esc quits
-		case '\e': exit(0);						break;
+		case '\033': exit(0);						break;
 		default: /* do nothing */				break;
 	}
 }
@@ -132,6 +132,10 @@ void myDisplay(void)
 		g_map->render();
 	}
 
+	Ghost g2 = Ghost(1, 1);
+	g2.setColor(1.0, 0.0, 0.0);
+	g2.render();
+
 	glutSwapBuffers();
 //	glFlush();
 }
@@ -148,11 +152,10 @@ void myIdleFunc()
 	y -= 0.00025;
 
 	int timeSinceStart = glutGet(GLUT_ELAPSED_TIME);
-	int deltaTime = timeSinceStart - oldTimeSinceStart;
-	oldTimeSinceStart = timeSinceStart;
+	int deltaTime = timeSinceStart - gLastTime;
+	gLastTime = timeSinceStart;
 
-	PacMan* player = Map::sharedMap()->pacMan;
-	player->move(deltaTime / 1000.0f);
+	g_map->update(deltaTime / 1000.0f);
 
 	glutPostRedisplay();
 }

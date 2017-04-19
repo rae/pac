@@ -27,6 +27,7 @@ SceneNode::SceneNode(mat4 aTransformation, float aScale)
 	r = 1.0f;
 	g = 1.0f;
 	b = 1.0f;
+	velocity.x = velocity.y = 0;
 }
 
 SceneNode::SceneNode(int x, int y)
@@ -35,6 +36,7 @@ SceneNode::SceneNode(int x, int y)
 	gridX = x;
 	gridY = y;
 	gridMoveTo(gridX, gridY);
+	velocity.x = velocity.y = 0;
 }
 
 SceneNode::~SceneNode()
@@ -138,14 +140,30 @@ void SceneNode::translateBy(float x, float y)
 
 void SceneNode::gridMoveTo(int x, int y)
 {
-	float mapWidth = Map::sharedMap()->width;
-	float mapHeight = Map::sharedMap()->height;
-	float xf = x;
-	float yf = y;
-	transformation = translate(glm::mat4(1.0f), vec3((xf-mapWidth/2.0f)*kMapScale, (yf-mapHeight/2.0f)*kMapScale, 0));
+	setGridPositionFloat(x, y);
 }
 
 void SceneNode::draw(float scale)
 {
 	return;
+}
+
+void SceneNode::update(float time_now)
+{
+	// do nothing
+}
+
+void SceneNode::getGridPositionFloat(float &gridXf, float &gridYf)
+{
+	vec3 rawPos = getTranslation();
+	Map * map = Map::sharedMap();
+	gridXf = rawPos.x / kMapScale + map->width / 2.0;
+	gridYf = rawPos.y / kMapScale + map->height / 2.0;
+}
+
+void SceneNode::setGridPositionFloat(float gridXf, float gridYf)
+{
+	float mapWidth = Map::sharedMap()->width;
+	float mapHeight = Map::sharedMap()->height;
+	transformation = translate(glm::mat4(1.0f), vec3((gridXf - mapWidth / 2.0f)*kMapScale, (gridYf - mapHeight / 2.0f)*kMapScale, 0));
 }

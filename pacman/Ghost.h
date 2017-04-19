@@ -12,5 +12,8 @@ public:
 	Ghost(glm::mat4 transformation, float scale, int sides);
 	Ghost(int gridx, int gridy);
 	void draw(float radius) override;
+	void update(float now);
+	void calculateVelocity(float inX, float inY);
+	bool inMiddleOfPath(float myX, float myY);
 	int sides;
 };

@@ -35,7 +35,7 @@ void PacMan::initPacMan()
 	movementSpeedFactor = 0.5f;
 }
 
-void PacMan::move(double deltaTime)
+void PacMan::update(float deltaTime)
 {
 	glm::vec3 movement;
 
@@ -63,4 +63,8 @@ void PacMan::move(double deltaTime)
 	movement *= framerateIndependentFactor;
 	position += movement;
 	translateBy(movement.x, movement.y);
+
+	float myX, myY;
+	getGridPositionFloat(myX, myY);
+	printf("PacMan at [%g, %g]\n", myX, myY);
 }

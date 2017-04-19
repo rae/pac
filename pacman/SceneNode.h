@@ -43,11 +43,15 @@ public:
 
 	vec3 getScale();
 	vec3 getTranslation();
+	void getGridPositionFloat(float &gridXf, float &gridYf);
+	void setGridPositionFloat(float gridXf, float gridYf);
 
 	virtual void draw(float scale);
 	void translateBy(float x, float y);
 	void gridMoveTo(int x, int y);
+	void update(float time_now);
 
 	int gridX, gridY;
+	vec2 velocity;
 };
 #endif // !SCENENODE_HEADER

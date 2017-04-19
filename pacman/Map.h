@@ -42,6 +42,9 @@ struct Map : SceneNode {
 	// draw all the SceneNodes that represent the map
 	void draw(float scale);
 
+	// update all the characters
+	void update(float time_now);
+
 	//
 	// Node data
 	//

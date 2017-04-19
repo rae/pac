@@ -24,5 +24,5 @@ public:
 
 	PacMan(glm::mat4 transformation, float scale);
 	void draw(float scale) override;
-	void move(double deltaTime);
+	void update(float deltaTime);
 };

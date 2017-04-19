@@ -140,4 +140,15 @@ void Map::draw(float scale)
 	for (SceneNode *node : children) {
 		node->draw(scale);
 	}
+	for (Ghost *ghost : ghosts) {
+		ghost->render();
+	}
+}
+
+void Map::update(float time_now)
+{
+	pacMan->update(time_now);
+	for (Ghost *ghost : ghosts) {
+		ghost->update(time_now);
+	}
 }

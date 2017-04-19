@@ -200,10 +200,7 @@ NodeList * Node::pathToNode(Node *destination)
 	while(!openList->empty()) {
 		// get the next node with the least cost and remove it from the open list
 		Node *cheapestNode = findLeastCostNode(*openList);
-
-		// makr this node as "closed"
 		openList->remove(cheapestNode);
-		closedList->push_back(cheapestNode);
 
 		// get the neighbours around cheapestNode (which sets their parent to cheapestNode,
 		// and adds them to the openList), checking if each is the destination
@@ -221,6 +218,7 @@ NodeList * Node::pathToNode(Node *destination)
 			return destination->parentPath();
 		}
 		// add cheapestNode to the closed list since it's been checked out
+		closedList->push_back(cheapestNode);
 	}
 	return path;
 }
